@@ -1,0 +1,19 @@
+@import "./base/reset.scss";
+@import "./base/color.scss";
+@import "./partial/header";
+@import "./partial/content";
+@import "./partial/add-task";
+
+
+body {
+  background-color: $body-bg-color;
+  height: 100vh;
+}
+
+.container {
+  margin: 0 auto;
+  width: 380px;
+  height: 610px;
+  background-color: $container-bg-color;
+  border-radius: 15px 15px 0 0;
+}

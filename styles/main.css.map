@@ -1,0 +1,14 @@
+{
+    "version": 3,
+    "mappings": "AGAA,AAAA,OAAO,CAAC;EACN,MAAM,EAAE,KAAK;EACb,aAAa,EAAE,aAAa;EAC5B,UAAU,EAAE,kBAAkB,CAAC,SAAS,CAAC,GAAG,CAAC,GAAG;EAChD,eAAe,EAAE,KAAK;CACvB;;ACLD,AAAA,QAAQ,CAAC;EACP,MAAM,EAAE,KAAK;CACd;;ACFD,AAAA,SAAS,CAAC;EACR,MAAM,EAAE,IAAI;EACZ,UAAU,EAAE,GAAG,CAAC,KAAK,CAAC,kBAAe;CACtC;;ALID,AAAA,IAAI,CAAC;EACH,gBAAgB,EEPF,kBAAe;EFQ7B,MAAM,EAAE,KAAK;CACd;;AAED,AAAA,UAAU,CAAC;EACT,MAAM,EAAE,MAAM;EACd,KAAK,EAAE,KAAK;EACZ,MAAM,EAAE,KAAK;EACb,gBAAgB,EEdG,KAAmB;EFetC,aAAa,EAAE,aAAa;CAC7B",
+    "sources": [
+        "../Scss/main.scss",
+        "../Scss/base/_reset.scss",
+        "../Scss/base/_color.scss",
+        "../Scss/partial/_header.scss",
+        "../Scss/partial/_content.scss",
+        "../Scss/partial/_add-task.scss"
+    ],
+    "names": [],
+    "file": "main.css"
+}

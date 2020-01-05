@@ -1,0 +1,29 @@
+.header {
+  height: 200px;
+  border-radius: 15px 15px 0 0;
+  background: url("/img/bg.jpg") no-repeat 50% 70%;
+  background-size: cover;
+}
+
+.content {
+  height: 350px;
+}
+
+.add-task {
+  height: 60px;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+body {
+  background-color: rgba(0, 0, 0, 0.1);
+  height: 100vh;
+}
+
+.container {
+  margin: 0 auto;
+  width: 380px;
+  height: 610px;
+  background-color: white;
+  border-radius: 15px 15px 0 0;
+}
+/*# sourceMappingURL=main.css.map */
