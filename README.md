@@ -10,7 +10,7 @@ HTML / SCSS
 
 ### 功能
 
-原生 JS
+JavaScript
 
 ## 使用語法學習記錄
 
