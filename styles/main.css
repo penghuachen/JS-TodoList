@@ -3,15 +3,79 @@
   border-radius: 15px 15px 0 0;
   background: url("/img/bg.jpg") no-repeat 50% 70%;
   background-size: cover;
+  position: relative;
+}
+
+.header .refresh {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  font-size: 28px;
+  color: white;
+  cursor: pointer;
+}
+
+.header .refresh:hover {
+  -webkit-transform: rotate(40deg);
+          transform: rotate(40deg);
+  text-shadow: 1px 4px rgba(0, 0, 0, 0.75);
 }
 
 .content {
   height: 350px;
+  overflow: auto;
 }
 
 .add-task {
   height: 60px;
   border-top: 1px solid rgba(0, 0, 0, 0.1);
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+}
+
+.add-task .plus {
+  font-size: 30px;
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  background-color: #4162f6;
+  text-align: center;
+  line-height: 40px;
+  color: white;
+}
+
+.add-task .input-task input[type="text"] {
+  width: 310px;
+  height: 35px;
+  border: none;
+  font-size: 20px;
+  padding: 5px;
+}
+
+.add-task .input-task input[type="text"]::-webkit-input-placeholder {
+  color: #4162f6;
+  font-size: 20px;
+}
+
+.add-task .input-task input[type="text"]:-ms-input-placeholder {
+  color: #4162f6;
+  font-size: 20px;
+}
+
+.add-task .input-task input[type="text"]::-ms-input-placeholder {
+  color: #4162f6;
+  font-size: 20px;
+}
+
+.add-task .input-task input[type="text"]::placeholder {
+  color: #4162f6;
+  font-size: 20px;
 }
 
 body {

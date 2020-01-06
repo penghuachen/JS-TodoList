@@ -1,4 +1,30 @@
 .add-task {
   height: 60px;
   border-top: 1px solid rgba(0,0,0,0.1);
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  .plus {
+    font-size: 30px;
+    width: 40px;
+    height: 40px;
+    border-radius: 999px;
+    background-color: $add-task-bg-color;
+    text-align: center;
+    line-height: 40px;
+    color: $add-task-icon-color;
+  }
+  .input-task {
+    input[type="text"] {
+      width: 310px;
+      height: 35px;
+      border: none;
+      font-size: 20px;
+      padding: 5px;
+      &::placeholder {
+        color: $input-color;
+        font-size: 20px;
+      }
+    }
+  }
 }

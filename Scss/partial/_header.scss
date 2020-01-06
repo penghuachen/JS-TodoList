@@ -3,4 +3,17 @@
   border-radius: 15px 15px 0 0;
   background: url('/img/bg.jpg') no-repeat 50% 70%;
   background-size: cover;
+  position: relative;
+  .refresh {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    font-size: 28px;
+    color: $refresh-icon-color;
+    cursor: pointer;
+    &:hover {
+      transform: rotate(40deg);
+      text-shadow: 1px 4px rgba(0,0,0,.75);
+    }
+  }
 }
