@@ -1,4 +1,46 @@
 .content {
   height: 350px;
   overflow: auto;
+  .task {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+    padding: 12px 10px;
+  }
+  .undone, .done {
+    width: 20px;
+    height: 20px;
+    border-radius: 999px;
+  }
+  .undone {
+    border: 2px solid #000;
+  }
+  .done {
+    background-color: $done-color;
+    border: 2px solid $done-color;
+    text-align: center;
+    svg {
+      width: 15px;
+      height: 15px;
+      line-height: 20px;
+    }
+  }
+  .task-content {
+    width: 316px;
+    padding: 0 10px;
+    .line-through {
+      text-decoration: line-through;
+      color: rgba(0,0,0,0.1);
+    }
+  }
+  .delete-icon {
+    width: 20px;
+    height: 23px;
+    svg {
+      transition: fill .2s;
+      &:hover {
+        fill: #f00;
+      }
+    }
+  }
 }
