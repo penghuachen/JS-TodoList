@@ -16,16 +16,18 @@ p {
 
 .header .refresh {
   position: absolute;
+  width: 28px;
+  height: 28px;
   right: 20px;
   top: 20px;
-  font-size: 28px;
+  -webkit-transition: all .2s;
+  transition: all .2s;
   color: white;
 }
 
 .header .refresh:hover {
   -webkit-transform: rotate(40deg);
           transform: rotate(40deg);
-  text-shadow: 1px 4px rgba(0, 0, 0, 0.75);
 }
 
 .content {
@@ -45,7 +47,7 @@ p {
 }
 
 .content .undone, .content .done {
-  width: 20px;
+  width: 21px;
   height: 20px;
   border-radius: 999px;
 }
@@ -104,14 +106,19 @@ p {
 }
 
 .add-task .plus {
-  font-size: 30px;
   width: 40px;
   height: 40px;
   border-radius: 999px;
   background-color: #4162f6;
   text-align: center;
-  line-height: 40px;
+  line-height: 37px;
   color: white;
+}
+
+.add-task .plus svg {
+  width: 30px;
+  height: 30px;
+  vertical-align: middle;
 }
 
 .add-task .input-task input[type="text"] {

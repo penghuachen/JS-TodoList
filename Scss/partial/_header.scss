@@ -6,13 +6,14 @@
   position: relative;
   .refresh {
     position: absolute;
+    width: 28px;
+    height: 28px;
     right: 20px;
     top: 20px;
-    font-size: 28px;
+    transition: all .2s;
     color: $refresh-icon-color;
     &:hover {
       transform: rotate(40deg);
-      text-shadow: 1px 4px rgba(0,0,0,.75);
     }
   }
 }
