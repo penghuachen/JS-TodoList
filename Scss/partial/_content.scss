@@ -37,8 +37,8 @@
   }
   .delete-icon {
     width: 20px;
-    height: 23px;
     svg {
+      vertical-align: bottom;
       transition: fill .2s;
       &:hover {
         fill: #f00;

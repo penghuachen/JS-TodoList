@@ -82,10 +82,10 @@ p {
 
 .content .delete-icon {
   width: 20px;
-  height: 23px;
 }
 
 .content .delete-icon svg {
+  vertical-align: bottom;
   -webkit-transition: fill .2s;
   transition: fill .2s;
 }
