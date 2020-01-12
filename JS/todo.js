@@ -17,8 +17,8 @@ function keyupToAddTask(e) {
 
 function addTask(e) {
   let inputTask = document.querySelector('.input-task input').value;
+  if(inputTask === '') return;
   taskObj = {
-    id: taskListAry.length,
     done: false,
     task: inputTask,
   }
@@ -38,6 +38,23 @@ function deleteTask(e) {
     taskListAry.splice(taskId, 1);
   }
   taskList();
+}
+
+document.querySelector('.refresh').addEventListener('click', deleteAllTasks);
+function deleteAllTasks(e) {
+  if(taskListAry.length === 0) {
+    return alert('目前沒有任何待辦事項');
+  }
+
+  let deleteChecked = confirm('你確定要刪除全部待辦事項嗎?');
+  if(deleteChecked) {
+    alert('成功刪除所有待辦事項');
+    taskListAry.splice(0);
+    taskList();
+  }
+  else {
+    alert('取消刪除所有待辦事項');
+  }
 }
 
 // 任務列表畫面
