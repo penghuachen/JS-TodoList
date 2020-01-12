@@ -1,50 +1,32 @@
 
 // 每次都要重新定義資料的id，並讓id與陣列長度為同步狀態，刪除、選取才不會有問題
-const taskListAry = [
-  {
-  id: 0,
-  done: false,
-  task: 123
-  },{
-    id: 1,
-    done: false,
-    task: 456
-  },{
-    id: 2,
-    done: false,
-    task: 789
-  }
-];
-// taskList();
-
-const tempObj = {
-  taskMessage: '',
-};
+const taskListAry = [];
 let taskObj = {};
-
-document.querySelector('.input-task input').addEventListener('change', getTaskMessage);
-function getTaskMessage(e) {
-  tempObj.taskMessage = e.target.value;
-}
 
 document.querySelector('.plus').addEventListener('click', addTask);
 function addTask(e) {
+  let inputTask = document.querySelector('.input-task input').value;
   taskObj = {
     id: taskListAry.length,
     done: false,
-    task: tempObj.taskMessage
+    task: inputTask,
   }
   taskListAry.push(taskObj);
   taskList();
+  document.querySelector('.input-task input').value = '';
 }
 
+document.querySelector('.content').addEventListener('click', deleteTask);
 function deleteTask(e) {
-  const targetNodename = e.target.nodeName;
-  if(targetNodename !== 'DIV') {
-    let taskId = e.currentTarget.getAttribute('data-num');
+  if(e.target.nodeName === 'path') {
+    let taskId = e.target.parentNode.parentNode.parentNode.getAttribute('data-num');
     taskListAry.splice(taskId, 1);
-    taskList();
   }
+  if(e.target.nodeName === 'svg') {
+    let taskId = e.target.parentNode.parentNode.getAttribute('data-num');
+    taskListAry.splice(taskId, 1);
+  }
+  taskList();
 }
 
 // 任務列表畫面
@@ -73,11 +55,4 @@ function taskList() {
   });
   const content = document.querySelector('.content');
   content.innerHTML = totalTasks; 
-  
-  // 原本不在DOM上的元素，重新渲染時需要重新綁定事件，需要再思考如何不耦合
-  // 重新渲染畫面時，此時的刪除按鈕沒有掛上監聽，原本的寫法只會掛上一次
-  // currentTarget need to know
-  document.querySelectorAll('.task').forEach(item => {
-    item.addEventListener('click', deleteTask);
-  });
 }
