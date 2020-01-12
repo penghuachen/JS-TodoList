@@ -30,6 +30,15 @@ p {
           transform: rotate(40deg);
 }
 
+.header .date {
+  position: absolute;
+  left: 10px;
+  bottom: 10px;
+  font-size: 25px;
+  color: white;
+  font-weight: bold;
+}
+
 .content {
   height: 350px;
   overflow: auto;

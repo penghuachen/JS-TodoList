@@ -84,3 +84,15 @@ function taskList() {
   const content = document.querySelector('.content');
   content.innerHTML = totalTasks; 
 }
+
+// 取得日期
+(function getDate() {
+  const days = ['Sunday', 'Monday', 'Tuesday', 'wednesday', 'Thursday', 'Friday', 'Saturday'];
+  const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'October', 'November', 'December'];
+  let currentDay = new Date().getDay();
+  let currentMonth = new Date().getMonth();
+  let currentDate = new Date().getDate();
+
+  let dom = `${ days[currentDay] }, ${ months[currentMonth].substring(0,3) } ${ currentDate }`;
+  document.querySelector('.date').innerHTML = dom;
+})();

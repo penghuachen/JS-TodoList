@@ -16,4 +16,12 @@
       transform: rotate(40deg);
     }
   }
+  .date {
+    position: absolute;
+    left: 10px;
+    bottom: 10px;
+    font-size: 25px;
+    color: $date-color;
+    font-weight: bold;
+  }
 }
