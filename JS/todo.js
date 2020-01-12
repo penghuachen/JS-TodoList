@@ -1,9 +1,20 @@
 
-// 每次都要重新定義資料的id，並讓id與陣列長度為同步狀態，刪除、選取才不會有問題
+// (關鍵)每次都要重新定義資料的id，並讓id與陣列長度為同步狀態，刪除、選取才不會有問題
 const taskListAry = [];
 let taskObj = {};
 
-document.querySelector('.plus').addEventListener('click', addTask);
+document.querySelector('.plus').addEventListener('click', clickToAddTask);
+function clickToAddTask(e) {
+  addTask();
+}
+
+document.querySelector('input').addEventListener('keyup', keyupToAddTask);
+function keyupToAddTask(e) {
+  if(e.keyCode === 13) {
+    addTask();
+  }
+}
+
 function addTask(e) {
   let inputTask = document.querySelector('.input-task input').value;
   taskObj = {
