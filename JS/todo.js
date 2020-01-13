@@ -7,20 +7,26 @@ let taskObj = {};
 document.querySelector('.plus').addEventListener('click', clickToAddTask);
 function clickToAddTask(e) {
   addTask();
-  addListenerToAddTask();
+  addListenerToTask();
 }
 
 document.querySelector('input').addEventListener('keyup', keyupToAddTask);
 function keyupToAddTask(e) {
   if(e.keyCode === 13) {
     addTask();
-    addListenerToAddTask();
+    addListenerToTask();
   }
 }
 
-function addListenerToAddTask() {
+function addListenerToTask() {
   let deleteIcons = document.getElementsByClassName('delete-icon');
   Array.from(deleteIcons).forEach(icon => icon.addEventListener('click', deleteTask));
+
+  let undones = document.getElementsByClassName('undone');
+  Array.from(undones).forEach(undone => undone.addEventListener('click', completeTask));
+
+  let dones = document.getElementsByClassName('done');
+  Array.from(dones).forEach(done => done.addEventListener('click', cancelCompletedTask));
 }
 
 function addTask(e) {
@@ -39,7 +45,7 @@ function deleteTask(e) {
   let taskId = e.currentTarget.parentNode.getAttribute('data-num');
   taskListAry.splice(taskId, 1);
   taskList();
-  addListenerToAddTask();
+  addListenerToTask();
 }
 
 document.querySelector('.refresh').addEventListener('click', deleteAllTasks);
@@ -59,15 +65,29 @@ function deleteAllTasks(e) {
   }
 }
 
-// 點擊切換是否完成
-// document.querySelector('.content').addEventListener('click', completeTask);
-// function completeTask(e) {
-// }
+function completeTask(e) {
+  let undone = e.currentTarget;
+  let done = e.currentTarget.parentNode.children[1];
+  let currentNode = e.currentTarget.parentNode;
+  undone.style.display = 'none';
+  done.style.display = 'block';
+  currentNode.classList.add('line-through');
+}
+
+function cancelCompletedTask(e) {
+  let done = e.currentTarget;
+  let undone = e.currentTarget.parentNode.children[0];
+  let currentNode = e.currentTarget.parentNode;
+  undone.style.display = 'block';
+  done.style.display = 'none';
+  currentNode.classList.remove('line-through');
+}
 
 // 任務列表畫面
 function taskList() {
   let totalTasks = '';
   const content = document.querySelector('.content');
+  // 當 taskListAry 為空時，
   if(taskListAry.length === 0) {
     content.innerHTML = '';
   }
