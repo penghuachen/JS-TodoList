@@ -1,22 +1,26 @@
 
 // (關鍵)每次都要重新定義資料的id，並讓id與陣列長度為同步狀態，刪除、選取才不會有問題
-const taskListAry = [{
-  done: false,
-  task: 'inputTask',
-}];
-taskList()
+const taskListAry = [];
+// taskList()
 let taskObj = {};
 
 document.querySelector('.plus').addEventListener('click', clickToAddTask);
 function clickToAddTask(e) {
   addTask();
+  addListenerToAddTask();
 }
 
 document.querySelector('input').addEventListener('keyup', keyupToAddTask);
 function keyupToAddTask(e) {
   if(e.keyCode === 13) {
     addTask();
+    addListenerToAddTask();
   }
+}
+
+function addListenerToAddTask() {
+  let deleteIcons = document.getElementsByClassName('delete-icon');
+  Array.from(deleteIcons).forEach(icon => icon.addEventListener('click', deleteTask));
 }
 
 function addTask(e) {
@@ -31,22 +35,11 @@ function addTask(e) {
   document.querySelector('.input-task input').value = '';
 }
 
-document.querySelector('.content').addEventListener('click', deleteTask);
 function deleteTask(e) {
-  let pathTagParentNode = e.target.parentNode.parentNode.className;
-  let svgTagParentNode = e.target.parentNode.className;
-
-  if(pathTagParentNode === 'delete-icon') {
-    console.log('path');
-    let taskId = e.target.parentNode.parentNode.parentNode.getAttribute('data-num');
-    taskListAry.splice(taskId, 1);
-  }
-  if(svgTagParentNode === 'delete-icon') {
-    console.log('svg');
-    let taskId = e.target.parentNode.parentNode.getAttribute('data-num');
-    taskListAry.splice(taskId, 1);
-  }
+  let taskId = e.currentTarget.parentNode.getAttribute('data-num');
+  taskListAry.splice(taskId, 1);
   taskList();
+  addListenerToAddTask();
 }
 
 document.querySelector('.refresh').addEventListener('click', deleteAllTasks);
@@ -69,12 +62,15 @@ function deleteAllTasks(e) {
 // 點擊切換是否完成
 // document.querySelector('.content').addEventListener('click', completeTask);
 // function completeTask(e) {
-
 // }
 
 // 任務列表畫面
 function taskList() {
   let totalTasks = '';
+  const content = document.querySelector('.content');
+  if(taskListAry.length === 0) {
+    content.innerHTML = '';
+  }
   taskListAry.forEach((obj, index) => {
     let dom = `
       <div class="task" data-num="${ index }">
@@ -95,9 +91,8 @@ function taskList() {
       </div>
     `;
     totalTasks += dom;
+    content.innerHTML = totalTasks; 
   });
-  const content = document.querySelector('.content');
-  content.innerHTML = totalTasks; 
 }
 
 // 取得日期
