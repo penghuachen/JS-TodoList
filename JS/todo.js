@@ -1,7 +1,11 @@
 
 // (關鍵)每次都要重新定義資料的id，並讓id與陣列長度為同步狀態，刪除、選取才不會有問題
-const taskListAry = [];
-// taskList()
+
+const taskListAry = [{
+  done: false,
+  task: 'inputTask',
+}];
+taskList();
 let taskObj = {};
 
 document.querySelector('.plus').addEventListener('click', clickToAddTask);
@@ -10,7 +14,7 @@ function clickToAddTask(e) {
   addListenerToTask();
 }
 
-document.querySelector('input').addEventListener('keyup', keyupToAddTask);
+document.querySelector('.input-task input').addEventListener('keyup', keyupToAddTask);
 function keyupToAddTask(e) {
   if(e.keyCode === 13) {
     addTask();
@@ -18,15 +22,20 @@ function keyupToAddTask(e) {
   }
 }
 
+// 每次重新建立 DOM 物件時替 DOM 元素掛上監聽事件
 function addListenerToTask() {
-  let deleteIcons = document.getElementsByClassName('delete-icon');
-  Array.from(deleteIcons).forEach(icon => icon.addEventListener('click', deleteTask));
+  let deleteIcons = document.querySelectorAll('.delete-icon');
+  deleteIcons.forEach(icon => icon.addEventListener('click', deleteTask));
 
-  let undones = document.getElementsByClassName('undone');
-  Array.from(undones).forEach(undone => undone.addEventListener('click', completeTask));
+  let undones = document.querySelectorAll('.undone');
+  undones.forEach(undone => undone.addEventListener('click', completeTask));
 
-  let dones = document.getElementsByClassName('done');
-  Array.from(dones).forEach(done => done.addEventListener('click', cancelCompletedTask));
+  let dones = document.querySelectorAll('.done');
+  dones.forEach(done => done.addEventListener('click', cancelCompletedTask));
+
+  let taskContent = document.querySelectorAll('.task-content');
+  taskContent.forEach(content => content.addEventListener('dblclick', editContent));
+
 }
 
 function addTask(e) {
@@ -87,6 +96,15 @@ function cancelCompletedTask(e) {
   currentTaskContent.classList.remove('line-through');
 }
 
+function editContent(e) { 
+  // console.log(e.currentTarget.children[0]);
+  const text = e.currentTarget.children[0];
+  const input = e.currentTarget.children[1];
+  text.style.display = "none";
+  input.style.display = "block";
+  input.value = text.textContent;
+}
+
 // 任務列表畫面
 function taskList() {
   let totalTasks = '';
@@ -97,31 +115,20 @@ function taskList() {
   }
   taskListAry.forEach((obj, index) => {
     let checkTaskDone;
-    if(obj.done === false) {
-      checkTaskDone = `
-        <div class="undone"></div>
-        <div class="done" style="display: none;">
-          <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="check" class="svg-inline--fa fa-check fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-            <path fill="white" d="M173.898 439.404l-166.4-166.4c-9.997-9.997-9.997-26.206 0-36.204l36.203-36.204c9.997-9.998 26.207-9.998 36.204 0L192 312.69 432.095 72.596c9.997-9.997 26.207-9.997 36.204 0l36.203 36.204c9.997 9.997 9.997 26.206 0 36.204l-294.4 294.401c-9.998 9.997-26.207 9.997-36.204-.001z">
-            </path>
-          </svg>
-        </div>
-        <p class="task-content">${ obj.task }</p>
-      `;
-    }
-    if(obj.done === true) {
-      checkTaskDone = `
-        <div class="undone" style="display: none;"></div>
-        <div class="done">
-          <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="check" class="svg-inline--fa fa-check fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-            <path fill="white" d="M173.898 439.404l-166.4-166.4c-9.997-9.997-9.997-26.206 0-36.204l36.203-36.204c9.997-9.998 26.207-9.998 36.204 0L192 312.69 432.095 72.596c9.997-9.997 26.207-9.997 36.204 0l36.203 36.204c9.997 9.997 9.997 26.206 0 36.204l-294.4 294.401c-9.998 9.997-26.207 9.997-36.204-.001z">
-            </path>
-          </svg>
-        </div>
-        <p class="task-content line-through">${ obj.task }</p>
-      `;
-      
-    }
+    // 透過模板字串搭配三元運算子動態修改css display / class 的值
+    checkTaskDone = `
+      <div class="undone" style="display: ${ !obj.done ? 'block' : 'none' };"></div>
+      <div class="done" style="display: ${ !obj.done ? 'none' : 'block'};">
+        <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="check" class="svg-inline--fa fa-check fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+          <path fill="white" d="M173.898 439.404l-166.4-166.4c-9.997-9.997-9.997-26.206 0-36.204l36.203-36.204c9.997-9.998 26.207-9.998 36.204 0L192 312.69 432.095 72.596c9.997-9.997 26.207-9.997 36.204 0l36.203 36.204c9.997 9.997 9.997 26.206 0 36.204l-294.4 294.401c-9.998 9.997-26.207 9.997-36.204-.001z">
+          </path>
+        </svg>
+      </div>
+      <div class="task-content ${ obj.done ? 'line-through' : '' }">
+        <p>${ obj.task }</p>
+        <input type="text" class="editTask" style="display: none;">
+      </div>
+    `;
     let dom = `
       <div class="task" data-num="${ index }">
         ${ checkTaskDone }
