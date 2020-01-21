@@ -1,11 +1,8 @@
 
 // (關鍵)每次都要重新定義資料的id，並讓id與陣列長度為同步狀態，刪除、選取才不會有問題
 
-const taskListAry = [{
-  done: false,
-  task: 'inputTask',
-}];
-taskList();
+const taskListAry = [];
+// taskList();
 let taskObj = {};
 
 document.querySelector('.plus').addEventListener('click', clickToAddTask);
@@ -35,6 +32,10 @@ function addListenerToTask() {
 
   let taskContent = document.querySelectorAll('.task-content');
   taskContent.forEach(content => content.addEventListener('dblclick', editContent));
+
+  let editTask = document.querySelectorAll('.editTask');
+  editTask.forEach(edit => edit.addEventListener('keyup', updateTaskContent));
+  editTask.forEach(edit => edit.addEventListener('blur', updateTaskContent));
 
 }
 
@@ -97,12 +98,23 @@ function cancelCompletedTask(e) {
 }
 
 function editContent(e) { 
-  // console.log(e.currentTarget.children[0]);
+  // console.log(e.currentTarget.children);
   const text = e.currentTarget.children[0];
   const input = e.currentTarget.children[1];
   text.style.display = "none";
   input.style.display = "block";
   input.value = text.textContent;
+}
+
+function updateTaskContent(e) {
+  if(e.keyCode === 13 || e.type === 'blur') {
+    const previousElement = e.currentTarget.previousElementSibling;
+    const input = e.currentTarget;
+    let newValue = e.currentTarget.value;
+    previousElement.textContent = newValue;
+    previousElement.style.display = "block";
+    input.style.display = "none";
+  }
 }
 
 // 任務列表畫面
