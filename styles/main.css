@@ -40,8 +40,43 @@ p {
 }
 
 .content {
-  height: 350px;
+  position: relative;
+  padding-top: 55px;
+}
+
+.content .task-status {
+  position: absolute;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  top: 0;
+  left: 0;
+  right: 0;
+  border-bottom: 1px solid #8d8d88;
+  -webkit-box-shadow: 0px 3px 5px #9d9d9d;
+          box-shadow: 0px 3px 5px #9d9d9d;
+}
+
+.content .task-status > p {
+  -webkit-box-flex: 0;
+      -ms-flex: 0 1 33.33%;
+          flex: 0 1 33.33%;
+  text-align: center;
+  height: 55px;
+  line-height: 55px;
+  letter-spacing: 3px;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.content .task-list {
   overflow: auto;
+  height: 350px;
+}
+
+.content .current {
+  background: #F17;
+  color: #fff;
 }
 
 .content .task {
@@ -82,7 +117,7 @@ p {
 }
 
 .content .task-content {
-  width: 316px;
+  width: 470px;
   padding: 0 10px;
 }
 
@@ -124,13 +159,12 @@ p {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  -ms-flex-pack: distribute;
-      justify-content: space-around;
 }
 
 .add-task .plus {
   width: 40px;
   height: 40px;
+  margin-left: 10px;
   border-radius: 999px;
   background-color: #4162f6;
   text-align: center;
@@ -144,12 +178,19 @@ p {
   vertical-align: middle;
 }
 
+.add-task .input-task {
+  width: 88%;
+  margin-left: 10px;
+}
+
 .add-task .input-task input[type="text"] {
-  width: 310px;
+  width: 95%;
   height: 35px;
   border: none;
   font-size: 20px;
   padding: 5px;
+  border: 1px solid #dedede;
+  border-radius: 5px;
 }
 
 .add-task .input-task input[type="text"]::-webkit-input-placeholder {
@@ -179,8 +220,7 @@ body {
 
 .container {
   margin: 0 auto;
-  width: 380px;
-  height: 610px;
+  width: 500px;
   background-color: white;
   border-radius: 15px 15px 0 0;
 }
