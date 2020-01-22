@@ -1,9 +1,12 @@
 
-// (關鍵)每次都要重新定義資料的id，並讓id與陣列長度為同步狀態，刪除、選取才不會有問題
+// index: 使陣列中的資料位置與 DOM 的節點位置同步，刪除、選取才不會有問題
+// id: 資料的唯一性，目前用於判斷狀態切換時，同步更新當前狀態陣列、更新原陣列
 
 const taskListAry = [];
-// taskList();
+let inProgressAry = [];
+let finishedAry = [];
 let taskObj = {};
+let currentStatus = '全部';
 
 document.querySelector('.plus').addEventListener('click', clickToAddTask);
 function clickToAddTask(e) {
@@ -31,7 +34,7 @@ function addListenerToTask() {
   dones.forEach(done => done.addEventListener('click', cancelCompletedTask));
 
   let taskContent = document.querySelectorAll('.task-content');
-  taskContent.forEach(content => content.addEventListener('dblclick', editContent));
+  taskContent.forEach(content => content.addEventListener('dblclick', editTaskContent));
 
   let editTask = document.querySelectorAll('.editTask');
   editTask.forEach(edit => edit.addEventListener('keyup', updateTaskContent));
@@ -43,19 +46,19 @@ function addTask(e) {
   let inputTask = document.querySelector('.input-task input').value;
   if(inputTask === '') return;
   taskObj = {
+    id: String(taskListAry.length),
     done: false,
     task: inputTask,
   }
   taskListAry.push(taskObj);
-  taskList();
+  taskList(taskListAry);
   document.querySelector('.input-task input').value = '';
 }
 
 function deleteTask(e) {
   let taskId = e.currentTarget.parentNode.getAttribute('data-num');
   taskListAry.splice(taskId, 1);
-  taskList();
-  addListenerToTask();
+  filterTasks(currentStatus);
 }
 
 document.querySelector('.refresh').addEventListener('click', deleteAllTasks);
@@ -68,7 +71,7 @@ function deleteAllTasks(e) {
   if(deleteChecked) {
     alert('成功刪除所有待辦事項');
     taskListAry.splice(0);
-    taskList();
+    taskList(taskListAry);
   }
   else {
     alert('取消刪除所有待辦事項');
@@ -76,28 +79,76 @@ function deleteAllTasks(e) {
 }
 
 function completeTask(e) {
+  filterTasks(currentStatus);
+  // console.log(e.currentTarget.parentNode);
   let undone = e.currentTarget;
   let done = e.currentTarget.parentNode.children[1];
   let taskId = e.currentTarget.parentNode.getAttribute('data-num');
+  let id = e.currentTarget.parentNode.getAttribute('id');
   let currentTaskContent = e.currentTarget.parentNode.children[2];
-  taskListAry[taskId].done = true; 
+
+  if(currentStatus === '全部') {
+    taskListAry[taskId].done = true; 
+  }
+  if(currentStatus === '進行中') {
+    // 取得原陣列與目前點擊比對相符的物件，更新原陣列的狀態。
+    taskListAry.forEach(task => {
+      if(task.id === id) {
+        task.done = true;
+      }
+    })
+    inProgressAry[taskId].done = true;
+  }
+  if(currentStatus === '已完成') {
+    taskListAry.forEach(task => {
+      if(task.id === id) {
+        task.done = true;
+      }
+    })
+    finishedAry[taskId].done = true;
+  }
+
   undone.style.display = 'none';
   done.style.display = 'block';
   currentTaskContent.classList.add('line-through');
+  filterTasks(currentStatus);
 }
 
 function cancelCompletedTask(e) {
+  filterTasks(currentStatus);
   let done = e.currentTarget;
   let undone = e.currentTarget.parentNode.children[0];
   let taskId = e.currentTarget.parentNode.getAttribute('data-num');
   let currentTaskContent = e.currentTarget.parentNode.children[2];
-  taskListAry[taskId].done = false; 
+  let id = e.currentTarget.parentNode.getAttribute('id');
+  // 更新資料狀態
+  if(currentStatus === '全部') {
+    taskListAry[taskId].done = false; 
+  }
+  if(currentStatus === '進行中') {
+    // 在進行中時切換任務狀態，需要更新原陣列、當前陣列
+    taskListAry.forEach(task => {
+      if(task.id === id) {
+        task.done = false;
+      }
+    })
+    inProgressAry[taskId].done = false;
+  }
+  if(currentStatus === '已完成') {
+    taskListAry.forEach(task => {
+      if(task.id === id) {
+        task.done = false;
+      }
+    })
+    finishedAry[taskId].done = false;
+  }
   undone.style.display = 'block';
   done.style.display = 'none';
   currentTaskContent.classList.remove('line-through');
+  filterTasks(currentStatus);
 }
 
-function editContent(e) { 
+function editTaskContent(e) { 
   // console.log(e.currentTarget.children);
   const text = e.currentTarget.children[0];
   const input = e.currentTarget.children[1];
@@ -110,6 +161,24 @@ document.querySelector('.task-status').addEventListener('click', changeStatus);
 function changeStatus(e) {
   document.querySelectorAll('.task-status p').forEach(status => status.classList.remove('current'));
   e.target.classList.add('current');
+  currentStatus = e.target.textContent;
+  filterTasks(currentStatus);
+}
+// 勾選任務狀態後，重新渲染該狀態時的畫面
+function filterTasks(currentStatus) { 
+  // console.log(currentStatus);
+  if(currentStatus === '全部') {
+    taskList(taskListAry);
+  }
+  if(currentStatus === '進行中') {
+    inProgressAry = taskListAry.filter(task => task.done === false);
+    taskList(inProgressAry);
+  }
+  if(currentStatus === '已完成') {
+    finishedAry = taskListAry.filter(task => task.done === true);
+    taskList(finishedAry);
+  }
+  addListenerToTask();
 }
 
 function updateTaskContent(e) {
@@ -124,15 +193,15 @@ function updateTaskContent(e) {
 }
 
 // 任務列表畫面
-function taskList() {
+function taskList(tasksAry) {
   let totalTasks = '';
   // const content = document.querySelector('.content');
   const taskList = document.querySelector('.task-list');
   // 當 taskListAry 為空時，
-  if(taskListAry.length === 0) {
+  if(tasksAry.length === 0) {
     taskList.innerHTML = '';
   }
-  taskListAry.forEach((obj, index) => {
+  tasksAry.forEach((obj, index) => {
     let checkTaskDone;
     // 透過模板字串搭配三元運算子動態修改css display / class 的值
     checkTaskDone = `
@@ -149,7 +218,7 @@ function taskList() {
       </div>
     `;
     let dom = `
-      <div class="task" data-num="${ index }">
+      <div class="task" id="${ obj.id }" data-num="${ index }">
         ${ checkTaskDone }
         <div class="delete-icon">
           <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="trash-alt" class="svg-inline--fa fa-trash-alt fa-w-14" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
@@ -166,7 +235,7 @@ function taskList() {
 
 // 取得日期
 (function getDate() {
-  const days = ['Sunday', 'Monday', 'Tuesday', 'wednesday', 'Thursday', 'Friday', 'Saturday'];
+  const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
   const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'October', 'November', 'December'];
   let currentDay = new Date().getDay();
   let currentMonth = new Date().getMonth();
