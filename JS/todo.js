@@ -195,7 +195,6 @@ function updateTaskContent(e) {
 // 任務列表畫面
 function taskList(tasksAry) {
   let totalTasks = '';
-  // const content = document.querySelector('.content');
   const taskList = document.querySelector('.task-list');
   // 當 taskListAry 為空時，
   if(tasksAry.length === 0) {
