@@ -106,6 +106,12 @@ function editContent(e) {
   input.value = text.textContent;
 }
 
+document.querySelector('.task-status').addEventListener('click', changeStatus);
+function changeStatus(e) {
+  document.querySelectorAll('.task-status p').forEach(status => status.classList.remove('current'));
+  e.target.classList.add('current');
+}
+
 function updateTaskContent(e) {
   if(e.keyCode === 13 || e.type === 'blur') {
     const previousElement = e.currentTarget.previousElementSibling;
