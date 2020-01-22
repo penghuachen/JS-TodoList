@@ -9,7 +9,7 @@ p {
 .header {
   height: 200px;
   border-radius: 15px 15px 0 0;
-  background: url("/img/bg.jpg") no-repeat 50% 70%;
+  background: url("../img/bg.jpg") no-repeat 50% 70%;
   background-size: cover;
   position: relative;
 }
