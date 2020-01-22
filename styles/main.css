@@ -69,11 +69,6 @@ p {
   cursor: pointer;
 }
 
-.content .task-list {
-  overflow: auto;
-  height: 350px;
-}
-
 .content .current {
   background: #F17;
   color: #fff;
@@ -88,6 +83,11 @@ p {
           align-items: center;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   padding: 16px 10px;
+}
+
+.content .task-list {
+  overflow: auto;
+  height: 350px;
 }
 
 .content .undone, .content .done {

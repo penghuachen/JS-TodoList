@@ -2,11 +2,14 @@
 // index: 使陣列中的資料位置與 DOM 的節點位置同步，刪除、選取才不會有問題
 // id: 資料的唯一性，目前用於判斷狀態切換時，同步更新當前狀態陣列、更新原陣列
 
-const taskListAry = [];
+const taskListAry = JSON.parse(localStorage.getItem('saveTaskList')) || [];
 let inProgressAry = [];
 let finishedAry = [];
 let taskObj = {};
 let currentStatus = '全部';
+let text;
+taskList(taskListAry);
+addListenerToTask();
 
 document.querySelector('.plus').addEventListener('click', clickToAddTask);
 function clickToAddTask(e) {
@@ -14,7 +17,8 @@ function clickToAddTask(e) {
   addListenerToTask();
 }
 
-document.querySelector('.input-task input').addEventListener('keyup', keyupToAddTask);
+document.querySelector('.input-task input').addEventListener('keypress', keyupToAddTask);
+
 function keyupToAddTask(e) {
   if(e.keyCode === 13) {
     addTask();
@@ -51,13 +55,33 @@ function addTask(e) {
     task: inputTask,
   }
   taskListAry.push(taskObj);
-  taskList(taskListAry);
+  localStorage.setItem('saveTaskList',JSON.stringify(taskListAry));
+  filterTasks(currentStatus);
   document.querySelector('.input-task input').value = '';
 }
 
 function deleteTask(e) {
   let taskId = e.currentTarget.parentNode.getAttribute('data-num');
-  taskListAry.splice(taskId, 1);
+  let id = e.currentTarget.parentNode.getAttribute('id');
+  if(currentStatus === '全部') {
+    taskListAry.splice(taskId, 1);
+  }
+  if(currentStatus === '進行中') {
+    // 取得原陣列與目前點擊比對相符的物件，更新原陣列的狀態。
+    taskListAry.forEach((task, index) => {
+      if(task.id === id) {
+        taskListAry.splice(index, 1);
+      }
+    })
+  }
+  if(currentStatus === '已完成') {
+    taskListAry.forEach((task, index) => {
+      if(task.id === id) {
+        taskListAry.splice(index, 1);
+      }
+    })
+  }
+  localStorage.setItem('saveTaskList',JSON.stringify(taskListAry));
   filterTasks(currentStatus);
 }
 
@@ -72,6 +96,7 @@ function deleteAllTasks(e) {
     alert('成功刪除所有待辦事項');
     taskListAry.splice(0);
     taskList(taskListAry);
+    localStorage.setItem('saveTaskList',JSON.stringify(taskListAry));
   }
   else {
     alert('取消刪除所有待辦事項');
@@ -107,10 +132,10 @@ function completeTask(e) {
     })
     finishedAry[taskId].done = true;
   }
-
   undone.style.display = 'none';
   done.style.display = 'block';
   currentTaskContent.classList.add('line-through');
+  localStorage.setItem('saveTaskList',JSON.stringify(taskListAry));
   filterTasks(currentStatus);
 }
 
@@ -145,6 +170,7 @@ function cancelCompletedTask(e) {
   undone.style.display = 'block';
   done.style.display = 'none';
   currentTaskContent.classList.remove('line-through');
+  localStorage.setItem('saveTaskList',JSON.stringify(taskListAry));
   filterTasks(currentStatus);
 }
 
@@ -155,6 +181,17 @@ function editTaskContent(e) {
   text.style.display = "none";
   input.style.display = "block";
   input.value = text.textContent;
+}
+
+function updateTaskContent(e) {
+  if(e.keyCode === 13 || e.type === 'blur') {
+    const previousElement = e.currentTarget.previousElementSibling;
+    const input = e.currentTarget;
+    let newValue = e.currentTarget.value;
+    previousElement.textContent = newValue;
+    previousElement.style.display = "block";
+    input.style.display = "none";
+  }
 }
 
 document.querySelector('.task-status').addEventListener('click', changeStatus);
@@ -181,16 +218,7 @@ function filterTasks(currentStatus) {
   addListenerToTask();
 }
 
-function updateTaskContent(e) {
-  if(e.keyCode === 13 || e.type === 'blur') {
-    const previousElement = e.currentTarget.previousElementSibling;
-    const input = e.currentTarget;
-    let newValue = e.currentTarget.value;
-    previousElement.textContent = newValue;
-    previousElement.style.display = "block";
-    input.style.display = "none";
-  }
-}
+
 
 // 任務列表畫面
 function taskList(tasksAry) {
