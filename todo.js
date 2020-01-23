@@ -9,7 +9,6 @@ let taskObj = {};
 let currentStatus = '全部';
 let text;
 taskList(taskListAry);
-addListenerToTask();
 
 document.querySelector('.plus').addEventListener('click', clickToAddTask);
 function clickToAddTask(e) {
@@ -55,7 +54,7 @@ function addTask(e) {
     task: inputTask,
   }
   taskListAry.push(taskObj);
-  localStorage.setItem('saveTaskList',JSON.stringify(taskListAry));
+  localStorage.setItem('saveTaskList', JSON.stringify(taskListAry));
   filterTasks(currentStatus);
   document.querySelector('.input-task input').value = '';
 }
@@ -151,7 +150,7 @@ function cancelCompletedTask(e) {
     taskListAry[taskId].done = false; 
   }
   if(currentStatus === '進行中') {
-    // 在進行中時切換任務狀態，需要更新原陣列、當前陣列
+    // 在進行中時切換任務狀態，同時更新原陣列、當前陣列中物件的狀態
     taskListAry.forEach(task => {
       if(task.id === id) {
         task.done = false;
