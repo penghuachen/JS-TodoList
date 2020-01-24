@@ -1,4 +1,5 @@
 
+
 // index: 使陣列中的資料位置與 DOM 的節點位置同步，刪除、選取才不會有問題
 // id: 資料的唯一性，目前用於判斷狀態切換時，同步更新當前狀態陣列、更新原陣列
 
@@ -9,6 +10,7 @@ let taskObj = {};
 let currentStatus = '全部';
 let text;
 taskList(taskListAry);
+addListenerToTask();
 
 document.querySelector('.plus').addEventListener('click', clickToAddTask);
 function clickToAddTask(e) {
@@ -188,6 +190,30 @@ function updateTaskContent(e) {
     const input = e.currentTarget;
     let newValue = e.currentTarget.value;
     previousElement.textContent = newValue;
+    console.log(e.currentTarget.parentNode.parentNode);
+    const taskId = e.currentTarget.parentNode.parentNode.getAttribute('data-num');
+    let id = e.currentTarget.parentNode.parentNode.getAttribute('id');
+    // 更新資料狀態
+    if(currentStatus === '全部') {
+      taskListAry[taskId].task = newValue; 
+    }
+    if(currentStatus === '進行中') {
+      // 在進行中時切換任務狀態，同時更新原陣列、當前陣列中物件的狀態
+      taskListAry.forEach(task => {
+        if(task.id === id) {
+          task.task = newValue;
+        }
+      })
+      inProgressAry[taskId].task = task;
+    }
+    if(currentStatus === '已完成') {
+      taskListAry.forEach(task => {
+        if(task.id === id) {
+          task.task = newValue;
+        }
+      })
+      finishedAry[taskId].task = newValue;
+    }
     previousElement.style.display = "block";
     input.style.display = "none";
   }
