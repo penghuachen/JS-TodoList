@@ -2,7 +2,9 @@
 
 此 side project 以原生 JS 語法完成
 
-![img](https://i.imgur.com/8HsIaun.gif)
+<div style="text-align:center;">
+    <img src="https://github.com/penghuachen/JS-TodoList/blob/master/todolist%20demo.gif?raw=true">
+</div>
 
 ## 功能
 
