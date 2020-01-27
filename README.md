@@ -1,9 +1,8 @@
 # ToDoList (原生JS)
 
 此 side project 以原生 JS 語法完成
-<div style="text-align: center;">
-  <img src="https://i.imgur.com/8HsIaun.gif">
-</div>
+
+![img](https://i.imgur.com/8HsIaun.gif)
 
 ## 功能
 
