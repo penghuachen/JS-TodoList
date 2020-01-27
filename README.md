@@ -3,7 +3,7 @@
 此 side project 以原生 JS 語法完成
 
 <div style='text-align:center;'>
-    <img width="500" height="700" src="https://github.com/penghuachen/JS-TodoList/blob/master/todolist%20demo.gif?raw=true">
+    <img width="300" height="400" src="https://github.com/penghuachen/JS-TodoList/blob/master/todolist%20demo.gif?raw=true">
 </div>
 
 ## 功能
