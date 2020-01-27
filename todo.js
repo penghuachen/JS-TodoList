@@ -54,7 +54,7 @@ function addTask(e) {
     id: String(taskListAry.length),
     done: false,
     task: inputTask,
-  }
+  };
   taskListAry.push(taskObj);
   localStorage.setItem('saveTaskList', JSON.stringify(taskListAry));
   filterTasks(currentStatus);
@@ -190,7 +190,6 @@ function updateTaskContent(e) {
     const input = e.currentTarget;
     let newValue = e.currentTarget.value;
     previousElement.textContent = newValue;
-    console.log(e.currentTarget.parentNode.parentNode);
     const taskId = e.currentTarget.parentNode.parentNode.getAttribute('data-num');
     let id = e.currentTarget.parentNode.parentNode.getAttribute('id');
     // 更新資料狀態
@@ -204,7 +203,7 @@ function updateTaskContent(e) {
           task.task = newValue;
         }
       })
-      inProgressAry[taskId].task = task;
+      inProgressAry[taskId].task = newValue;
     }
     if(currentStatus === '已完成') {
       taskListAry.forEach(task => {
@@ -254,9 +253,8 @@ function taskList(tasksAry) {
     taskList.innerHTML = '';
   }
   tasksAry.forEach((obj, index) => {
-    let checkTaskDone;
     // 透過模板字串搭配三元運算子動態修改css display / class 的值
-    checkTaskDone = `
+    let checkTaskDone = `
       <div class="undone" style="display: ${ !obj.done ? 'block' : 'none' };"></div>
       <div class="done" style="display: ${ !obj.done ? 'none' : 'block'};">
         <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="check" class="svg-inline--fa fa-check fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
