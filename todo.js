@@ -29,6 +29,7 @@ function keyupToAddTask(e) {
 
 // 每次重新建立 DOM 物件時替 DOM 元素掛上監聽事件
 function addListenerToTask() {
+  // console.log('add listener');
   let deleteIcons = document.querySelectorAll('.delete-icon');
   deleteIcons.forEach(icon => icon.addEventListener('click', deleteTask));
 
@@ -48,6 +49,7 @@ function addListenerToTask() {
 }
 
 function addTask(e) {
+  // console.log('add');
   let inputTask = document.querySelector('.input-task input').value;
   if(inputTask === '') return;
   taskObj = {
@@ -62,6 +64,7 @@ function addTask(e) {
 }
 
 function deleteTask(e) {
+  console.log('delete');
   let taskId = e.currentTarget.parentNode.getAttribute('data-num');
   let id = e.currentTarget.parentNode.getAttribute('id');
   if(currentStatus === '全部') {
@@ -82,7 +85,7 @@ function deleteTask(e) {
       }
     })
   }
-  localStorage.setItem('saveTaskList',JSON.stringify(taskListAry));
+  localStorage.setItem('saveTaskList', JSON.stringify(taskListAry));
   filterTasks(currentStatus);
 }
 
@@ -176,15 +179,18 @@ function cancelCompletedTask(e) {
 }
 
 function editTaskContent(e) { 
+  console.log('editTaskContent');
   // console.log(e.currentTarget.children);
   const text = e.currentTarget.children[0];
   const input = e.currentTarget.children[1];
   text.style.display = "none";
   input.style.display = "block";
   input.value = text.textContent;
+
 }
 
 function updateTaskContent(e) {
+  console.log('update');
   if(e.keyCode === 13 || e.type === 'blur') {
     const previousElement = e.currentTarget.previousElementSibling;
     const input = e.currentTarget;
@@ -247,11 +253,12 @@ function filterTasks(currentStatus) {
 // 任務列表畫面
 function taskList(tasksAry) {
   let totalTasks = '';
-  const taskList = document.querySelector('.task-list');
+  const taskListTest = document.querySelector('.task-list');
   // 當 taskListAry 為空時，
   if(tasksAry.length === 0) {
-    taskList.innerHTML = '';
+    taskListTest.innerHTML = '';
   }
+  // data-testid="task-content"
   tasksAry.forEach((obj, index) => {
     // 透過模板字串搭配三元運算子動態修改css display / class 的值
     let checkTaskDone = `
@@ -262,7 +269,7 @@ function taskList(tasksAry) {
           </path>
         </svg>
       </div>
-      <div class="task-content ${ obj.done ? 'line-through' : '' }">
+      <div  class="task-content ${ obj.done ? 'line-through' : '' }">
         <p>${ obj.task }</p>
         <input type="text" class="editTask" style="display: none;">
       </div>
@@ -270,7 +277,7 @@ function taskList(tasksAry) {
     let dom = `
       <div class="task" id="${ obj.id }" data-num="${ index }">
         ${ checkTaskDone }
-        <div class="delete-icon">
+        <div data-testid="delete-icon" class="delete-icon">
           <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="trash-alt" class="svg-inline--fa fa-trash-alt fa-w-14" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
             <path d="M32 464a48 48 0 0 0 48 48h288a48 48 0 0 0 48-48V128H32zm272-256a16 16 0 0 1 32 0v224a16 16 0 0 1-32 0zm-96 0a16 16 0 0 1 32 0v224a16 16 0 0 1-32 0zm-96 0a16 16 0 0 1 32 0v224a16 16 0 0 1-32 0zM432 32H312l-9.4-18.7A24 24 0 0 0 281.1 0H166.8a23.72 23.72 0 0 0-21.4 13.3L136 32H16A16 16 0 0 0 0 48v32a16 16 0 0 0 16 16h416a16 16 0 0 0 16-16V48a16 16 0 0 0-16-16z">
             </path>
@@ -279,9 +286,10 @@ function taskList(tasksAry) {
       </div>
     `;
     totalTasks += dom;
-    taskList.innerHTML = totalTasks; 
+    taskListTest.innerHTML = totalTasks; 
   });
 }
+
 
 // 取得日期
 (function getDate() {
@@ -294,3 +302,7 @@ function taskList(tasksAry) {
   let dom = `${ days[currentDay] }, ${ months[currentMonth].substring(0,3) } ${ currentDate }`;
   document.querySelector('.date').innerHTML = dom;
 })();
+
+const test = document.querySelectorAll('.test').forEach(item => {
+  item.addEventListener('click', (e) => console.log(e));
+})
