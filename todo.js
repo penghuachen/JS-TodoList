@@ -1,9 +1,8 @@
 
-
 // index: 使陣列中的資料位置與 DOM 的節點位置同步，刪除、選取才不會有問題
 // id: 資料的唯一性，目前用於判斷狀態切換時，同步更新當前狀態陣列、更新原陣列
-
-const taskListAry = JSON.parse(localStorage.getItem('saveTaskList')) || [];
+// JSON.parse(localStorage.getItem('saveTaskList')) ||
+const taskListAry =  JSON.parse(localStorage.getItem('saveTaskList')) || [];
 let inProgressAry = [];
 let finishedAry = [];
 let taskObj = {};
@@ -64,7 +63,7 @@ function addTask(e) {
 }
 
 function deleteTask(e) {
-  console.log('delete');
+  // console.log('delete');
   let taskId = e.currentTarget.parentNode.getAttribute('data-num');
   let id = e.currentTarget.parentNode.getAttribute('id');
   if(currentStatus === '全部') {
@@ -91,18 +90,22 @@ function deleteTask(e) {
 
 document.querySelector('.refresh').addEventListener('click', deleteAllTasks);
 function deleteAllTasks(e) {
+  // console.log('refresh');
   if(taskListAry.length === 0) {
     return alert('目前沒有任何待辦事項');
   }
 
   let deleteChecked = confirm('你確定要刪除全部待辦事項嗎?');
   if(deleteChecked) {
+    // console.log('confirm');
+
     alert('成功刪除所有待辦事項');
     taskListAry.splice(0);
     taskList(taskListAry);
     localStorage.setItem('saveTaskList',JSON.stringify(taskListAry));
   }
   else {
+    console.log('alert2');
     alert('取消刪除所有待辦事項');
   }
 }
@@ -179,18 +182,18 @@ function cancelCompletedTask(e) {
 }
 
 function editTaskContent(e) { 
-  console.log('editTaskContent');
+  // console.log('editTaskContent');
   // console.log(e.currentTarget.children);
   const text = e.currentTarget.children[0];
   const input = e.currentTarget.children[1];
   text.style.display = "none";
   input.style.display = "block";
   input.value = text.textContent;
-
 }
 
 function updateTaskContent(e) {
-  console.log('update');
+  // console.log('update');
+
   if(e.keyCode === 13 || e.type === 'blur') {
     const previousElement = e.currentTarget.previousElementSibling;
     const input = e.currentTarget;
@@ -251,7 +254,7 @@ function filterTasks(currentStatus) {
 
 
 // 任務列表畫面
-function taskList(tasksAry) {
+function taskList(tasksAry) {｀
   let totalTasks = '';
   const taskListTest = document.querySelector('.task-list');
   // 當 taskListAry 為空時，
@@ -262,16 +265,16 @@ function taskList(tasksAry) {
   tasksAry.forEach((obj, index) => {
     // 透過模板字串搭配三元運算子動態修改css display / class 的值
     let checkTaskDone = `
-      <div class="undone" style="display: ${ !obj.done ? 'block' : 'none' };"></div>
-      <div class="done" style="display: ${ !obj.done ? 'none' : 'block'};">
+      <div data-testid="undone" class="undone" style="display: ${ !obj.done ? 'block' : 'none' };"></div>
+      <div data-testid="done" class="done" style="display: ${ !obj.done ? 'none' : 'block'};">
         <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="check" class="svg-inline--fa fa-check fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
           <path fill="white" d="M173.898 439.404l-166.4-166.4c-9.997-9.997-9.997-26.206 0-36.204l36.203-36.204c9.997-9.998 26.207-9.998 36.204 0L192 312.69 432.095 72.596c9.997-9.997 26.207-9.997 36.204 0l36.203 36.204c9.997 9.997 9.997 26.206 0 36.204l-294.4 294.401c-9.998 9.997-26.207 9.997-36.204-.001z">
           </path>
         </svg>
       </div>
-      <div  class="task-content ${ obj.done ? 'line-through' : '' }">
+      <div data-testid="task-content" class="task-content ${ obj.done ? 'line-through' : '' }">
         <p>${ obj.task }</p>
-        <input type="text" class="editTask" style="display: none;">
+        <input data-testid="editTask" type="text" class="editTask" style="display: none;">
       </div>
     `;
     let dom = `
@@ -302,7 +305,3 @@ function taskList(tasksAry) {
   let dom = `${ days[currentDay] }, ${ months[currentMonth].substring(0,3) } ${ currentDate }`;
   document.querySelector('.date').innerHTML = dom;
 })();
-
-const test = document.querySelectorAll('.test').forEach(item => {
-  item.addEventListener('click', (e) => console.log(e));
-})
