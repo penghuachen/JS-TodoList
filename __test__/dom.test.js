@@ -7,6 +7,9 @@ describe('測試 todoList 功能', () => {
     jest.resetModules();
     // console.log('beforeEach');
   })
+  afterEach(() => {
+    localStorage.setItem('saveTaskList', '[]');
+  })
 
   describe('測試能否正常新增待辦事項', () => {
     test('測試函式: addTask', () => {
@@ -41,14 +44,13 @@ describe('測試 todoList 功能', () => {
       const container = document.body;
       let inputTask = getByTestId(container, 'input');
       const plus = getByTestId(container, 'plus');
-      require('../todo');
+      require('../js/todo');
 
       // Act
       inputTask.value = 'First task';
       fireEvent.click(plus);
   
       const firstTaskContent = getByTestId(container, 'task-list').children[0].textContent;
-      localStorage.setItem('saveTaskList', '[]');
 
       // const firstTaskContent = getByTestId(container, 'task-content').textContent;
       // console.log(container.innerHTML);
@@ -76,7 +78,27 @@ describe('測試 todoList 功能', () => {
             <p class="doing-task">進行中</p>
             <p class="finished-task">已完成</p>
           </div>
-          <div data-testid="task-list" class="task-list"></div>
+          <div data-testid="task-list" class="task-list">
+            <div class="task" id="0" data-num="0">
+              <div data-testid="undone" class="undone" style="display: none;"></div>
+            <div data-testid="done" class="done" style="display: block;">
+              <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="check" class="svg-inline--fa fa-check fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                <path fill="white" d="M173.898 439.404l-166.4-166.4c-9.997-9.997-9.997-26.206 0-36.204l36.203-36.204c9.997-9.998 26.207-9.998 36.204 0L192 312.69 432.095 72.596c9.997-9.997 26.207-9.997 36.204 0l36.203 36.204c9.997 9.997 9.997 26.206 0 36.204l-294.4 294.401c-9.998 9.997-26.207 9.997-36.204-.001z">
+                </path>
+              </svg>
+            </div>
+            <div data-testid="task-content" class="task-content line-through">
+              <p>12456789</p>
+              <input data-testid="editTask" type="text" class="editTask" style="display: none;">
+            </div>
+              <div data-testid="delete-icon" class="delete-icon">
+                <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="trash-alt" class="svg-inline--fa fa-trash-alt fa-w-14" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                  <path d="M32 464a48 48 0 0 0 48 48h288a48 48 0 0 0 48-48V128H32zm272-256a16 16 0 0 1 32 0v224a16 16 0 0 1-32 0zm-96 0a16 16 0 0 1 32 0v224a16 16 0 0 1-32 0zm-96 0a16 16 0 0 1 32 0v224a16 16 0 0 1-32 0zM432 32H312l-9.4-18.7A24 24 0 0 0 281.1 0H166.8a23.72 23.72 0 0 0-21.4 13.3L136 32H16A16 16 0 0 0 0 48v32a16 16 0 0 0 16 16h416a16 16 0 0 0 16-16V48a16 16 0 0 0-16-16z">
+                  </path>
+                </svg>
+              </div> 
+            </div>            
+          </div>
           <div data-testid="plus" class="plus">
             <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="plus" class="svg-inline--fa fa-plus fa-w-14" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
               <path fill="currentColor" d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z">
@@ -88,19 +110,20 @@ describe('測試 todoList 功能', () => {
           </div>
         </div>
       `;
-  
+      
       const container = document.body;
       let inputTask = getByTestId(container, 'input');
       const plus = getByTestId(container, 'plus');
-      require('../todo');
+
+      require('../js/todo');
   
       // Act
       inputTask.value = 'First task';
       fireEvent.click(plus);
-      // 如果這麼寫就不用在主程式中寫 data-testid="delete-icon" (待確認寫法好壞)
-      // document.querySelectorAll('.delete-icon').forEach(item => item.setAttribute('data-testid', 'delete-icon'));
+      
       const deleteTask = getAllByTestId(container, 'delete-icon');
       fireEvent.click(deleteTask[0]);
+
       const checkTaskDelete = getByTestId(container, 'task-list').innerHTML;
   
       // Assert
@@ -141,7 +164,7 @@ describe('測試 todoList 功能', () => {
       const container = document.body;
       let inputTask = getByTestId(container, 'input');
       const plus = getByTestId(container, 'plus');
-      require('../todo');
+      require('../js/todo');
   
       // Act
       inputTask.value = 'First task';
@@ -161,7 +184,7 @@ describe('測試 todoList 功能', () => {
       const secondTaskContent = getByTestId(container, 'task-list').children[0].textContent;
       // const secondTaskContent = getByTestId(container, 'task-content').textContent;
       // console.log(secondTaskContent);
-      localStorage.setItem('saveTaskList', '[]');
+      // localStorage.setItem('saveTaskList', '[]');
       // Assert
       expect(secondTaskContent).toMatch(/Second task/);
     });
@@ -204,7 +227,7 @@ describe('測試 todoList 功能', () => {
       window.alert = jest.fn()
       window.confirm = jest.fn(() => true)
 
-      require('../todo');
+      require('../js/todo');
 
       // Act
       inputTask.value = 'First task';
@@ -214,7 +237,7 @@ describe('測試 todoList 功能', () => {
       fireEvent.click(refresh);
 
       const checkTaskAllDelete = getByTestId(container, 'task-list').innerHTML;
-      localStorage.setItem('saveTaskList', '[]');
+      // localStorage.setItem('saveTaskList', '[]');
 
       // Assert
       expect(checkTaskAllDelete).toBe("");
@@ -257,7 +280,7 @@ describe('測試 todoList 功能', () => {
         let inputTask = getByTestId(container, 'input');
         const plus = getByTestId(container, 'plus');
   
-        require('../todo');
+        require('../js/todo');
   
         // Act
         inputTask.value = 'First task';
@@ -266,7 +289,7 @@ describe('測試 todoList 功能', () => {
         const undone = getAllByTestId(container, 'undone');
         fireEvent.click(undone[0]);
         // const checkTaskAllDelete = getByTestId(container, 'task-list').innerHTML;
-        localStorage.setItem('saveTaskList', '[]');
+        // localStorage.setItem('saveTaskList', '[]');
         
         // Assert
         expect(undone[0]).toHaveStyle("display: none");
@@ -306,7 +329,7 @@ describe('測試 todoList 功能', () => {
         let inputTask = getByTestId(container, 'input');
         const plus = getByTestId(container, 'plus');
   
-        require('../todo');
+        require('../js/todo');
   
         // Act
         inputTask.value = 'First task';
@@ -316,7 +339,7 @@ describe('測試 todoList 功能', () => {
         const done = getAllByTestId(container, 'done');
         fireEvent.click(done[0]);
         // const checkTaskAllDelete = getByTestId(container, 'task-list').innerHTML;
-        localStorage.setItem('saveTaskList', '[]');
+        // localStorage.setItem('saveTaskList', '[]');
         
         // Assert
         expect(done[0]).toHaveStyle("display: none");
@@ -360,7 +383,7 @@ describe('測試 todoList 功能', () => {
         // 測試邏輯: 將三個區域選取起來，觸發情中
         let taskStatus = getByTestId(container, 'task-status');
   
-        require('../todo');
+        require('../js/todo');
   
         // Act
         fireEvent.click(taskStatus); 
@@ -404,7 +427,7 @@ describe('測試 todoList 功能', () => {
         // 測試邏輯: 將三個區域選取起來，觸發情中
         let taskStatus = getAllByTestId(container, 'task-status');
   
-        require('../todo');
+        require('../js/todo');
   
         // Act
         fireEvent.click(taskStatus[0]);
@@ -449,7 +472,7 @@ describe('測試 todoList 功能', () => {
         // 測試邏輯: 將三個區域選取起來，觸發情中
         let taskStatus = getByTestId(container, 'task-status');
   
-        require('../todo');
+        require('../js/todo');
   
         // Act
         fireEvent.click(taskStatus); 
