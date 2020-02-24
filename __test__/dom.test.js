@@ -64,6 +64,7 @@ describe('測試 todoList 功能', () => {
   describe('測試能否正常刪除待辦事項', () => {
     test('測試函式: deleteTask', () => {
       // Arrange 
+
       document.body.innerHTML = `
         <div class="header">
           <svg class="refresh" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="sync-alt" class="svg-inline--fa fa-sync-alt fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
@@ -114,13 +115,11 @@ describe('測試 todoList 功能', () => {
       const container = document.body;
       let inputTask = getByTestId(container, 'input');
       const plus = getByTestId(container, 'plus');
-
       require('../js/todo');
-  
       // Act
-      inputTask.value = 'First task';
-      fireEvent.click(plus);
-      
+      // 目前先以此方式測試，但一個測試內容理應不該有兩個測試行為，解決方法為主程式模組化處理(後續學習)
+      // inputTask.value = 'First task';
+      // fireEvent.click(plus);
       const deleteTask = getAllByTestId(container, 'delete-icon');
       fireEvent.click(deleteTask[0]);
 

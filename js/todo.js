@@ -8,7 +8,10 @@ let finishedAry = [];
 let taskObj = {};
 let currentStatus = '全部';
 let text;
-taskList(taskListAry);
+
+setTimeout(() => {
+  taskList(taskListAry);
+}, 0)
 addListenerToTask();
 
 document.querySelector('.plus').addEventListener('click', clickToAddTask);
@@ -63,7 +66,7 @@ function addTask(e) {
 }
 
 function deleteTask(e) {
-  // console.log('delete');
+  console.log('delete');
   let taskId = e.currentTarget.parentNode.getAttribute('data-num');
   let id = e.currentTarget.parentNode.getAttribute('id');
   if(currentStatus === '全部') {
@@ -286,6 +289,7 @@ function taskList(tasksAry) {
     // !index && console.log(dom);
     return dom;
   }).join('');
+
 }
 
 
