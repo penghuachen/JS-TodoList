@@ -254,7 +254,7 @@ function filterTasks(currentStatus) {
 
 
 // 任務列表畫面
-function taskList(tasksAry) {｀
+function taskList(tasksAry) {
   let totalTasks = '';
   const taskListTest = document.querySelector('.task-list');
   // 當 taskListAry 為空時，
