@@ -1,17 +1,24 @@
 
 // index: 使陣列中的資料位置與 DOM 的節點位置同步，刪除、選取才不會有問題
 // id: 資料的唯一性，目前用於判斷狀態切換時，同步更新當前狀態陣列、更新原陣列
-// JSON.parse(localStorage.getItem('saveTaskList')) ||
+
 const taskListAry =  JSON.parse(localStorage.getItem('saveTaskList')) || [];
 let inProgressAry = [];
 let finishedAry = [];
 let taskObj = {};
 let currentStatus = '全部';
-let text;
 
-setTimeout(() => {
+// setTimeout(() => {
+//   console.log(123);
+//   taskList(taskListAry);
+// }, 0)
+
+// DOMContentLoaded 也可以
+
+window.onload = () => {
   taskList(taskListAry);
-}, 0)
+}
+
 addListenerToTask();
 
 document.querySelector('.plus').addEventListener('click', clickToAddTask);
@@ -66,7 +73,7 @@ function addTask(e) {
 }
 
 function deleteTask(e) {
-  console.log('delete');
+  // console.log('delete');
   let taskId = e.currentTarget.parentNode.getAttribute('data-num');
   let id = e.currentTarget.parentNode.getAttribute('id');
   if(currentStatus === '全部') {
