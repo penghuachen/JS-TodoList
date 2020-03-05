@@ -15,11 +15,11 @@ let currentStatus = '全部';
 
 // DOMContentLoaded 也可以
 
-window.onload = () => {
+// window.onload = () => {
   taskList(taskListAry);
-}
-
+// }
 addListenerToTask();
+
 
 document.querySelector('.plus').addEventListener('click', clickToAddTask);
 function clickToAddTask(e) {
@@ -268,23 +268,26 @@ function taskList(tasksAry) {
   const taskListView = document.querySelector('.task-list');
   taskListView.innerHTML = tasksAry.map((obj, index) => {
     // 透過模板字串搭配三元運算子動態修改css display / class 的值
-    
-    let checkTaskDone = `
-      <div data-testid="undone" class="undone" style="display: ${ !obj.done ? 'block' : 'none' };"></div>
-      <div data-testid="done" class="done" style="display: ${ !obj.done ? 'none' : 'block'};">
-        <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="check" class="svg-inline--fa fa-check fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-          <path fill="white" d="M173.898 439.404l-166.4-166.4c-9.997-9.997-9.997-26.206 0-36.204l36.203-36.204c9.997-9.998 26.207-9.998 36.204 0L192 312.69 432.095 72.596c9.997-9.997 26.207-9.997 36.204 0l36.203 36.204c9.997 9.997 9.997 26.206 0 36.204l-294.4 294.401c-9.998 9.997-26.207 9.997-36.204-.001z">
-          </path>
-        </svg>
-      </div>
-      <div data-testid="task-content" class="task-content ${ obj.done ? 'line-through' : '' }">
-        <p>${ obj.task }</p>
-        <input data-testid="editTask" type="text" class="editTask" style="display: none;">
-      </div>
-    `;
+
+    // 將完成狀態拆分的更細，再透過 template string 與任務狀態判斷對應的顯示
+    const undoneIcon = `<div data-testid="undone" class="undone" style="display: ${ !obj.done ? 'block' : 'none' };"></div>`
+    const doneIcon = `<div data-testid="done" class="done" style="display: ${ !obj.done ? 'none' : 'block'};">
+    <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="check" class="svg-inline--fa fa-check fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+      <path fill="white" d="M173.898 439.404l-166.4-166.4c-9.997-9.997-9.997-26.206 0-36.204l36.203-36.204c9.997-9.998 26.207-9.998 36.204 0L192 312.69 432.095 72.596c9.997-9.997 26.207-9.997 36.204 0l36.203 36.204c9.997 9.997 9.997 26.206 0 36.204l-294.4 294.401c-9.998 9.997-26.207 9.997-36.204-.001z">
+      </path>
+    </svg>
+  </div>`
+
+    const task = `<div data-testid="task-content" class="task-content ${ obj.done ? 'line-through' : '' }">
+      <p>${ obj.task }</p>
+      <input data-testid="editTask" type="text" class="editTask" style="display: none;">
+    </div>`
+      
+      
     let dom = `
       <div class="task" id="${ obj.id }" data-num="${ index }">
-        ${ checkTaskDone }
+        ${ obj.done ? doneIcon : undoneIcon }
+        ${ task }
         <div data-testid="delete-icon" class="delete-icon">
           <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="trash-alt" class="svg-inline--fa fa-trash-alt fa-w-14" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
             <path d="M32 464a48 48 0 0 0 48 48h288a48 48 0 0 0 48-48V128H32zm272-256a16 16 0 0 1 32 0v224a16 16 0 0 1-32 0zm-96 0a16 16 0 0 1 32 0v224a16 16 0 0 1-32 0zm-96 0a16 16 0 0 1 32 0v224a16 16 0 0 1-32 0zM432 32H312l-9.4-18.7A24 24 0 0 0 281.1 0H166.8a23.72 23.72 0 0 0-21.4 13.3L136 32H16A16 16 0 0 0 0 48v32a16 16 0 0 0 16 16h416a16 16 0 0 0 16-16V48a16 16 0 0 0-16-16z">

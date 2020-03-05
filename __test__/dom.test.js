@@ -5,7 +5,6 @@ require('@testing-library/jest-dom');
 describe('測試 todoList 功能', () => {
   beforeEach(() => {
     jest.resetModules();
-    // console.log('beforeEach');
   })
 
   afterEach(() => {
@@ -51,7 +50,9 @@ describe('測試 todoList 功能', () => {
         // Act
         inputTask.value = 'First task';
         fireEvent.click(plus);
-    
+
+        // console.log('node',global.localStorage);
+        // console.log('web',localStorage);
         const firstTaskContent = getByTestId(container, 'task-list').children[0].textContent;
       
         // Jest matcher for string
@@ -126,25 +127,7 @@ describe('測試 todoList 功能', () => {
             <p class="finished-task">已完成</p>
           </div>
           <div data-testid="task-list" class="task-list">
-            <div class="task" id="0" data-num="0">
-              <div data-testid="undone" class="undone" style="display: none;"></div>
-              <div data-testid="done" class="done" style="display: block;">
-                <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="check" class="svg-inline--fa fa-check fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-                  <path fill="white" d="M173.898 439.404l-166.4-166.4c-9.997-9.997-9.997-26.206 0-36.204l36.203-36.204c9.997-9.998 26.207-9.998 36.204 0L192 312.69 432.095 72.596c9.997-9.997 26.207-9.997 36.204 0l36.203 36.204c9.997 9.997 9.997 26.206 0 36.204l-294.4 294.401c-9.998 9.997-26.207 9.997-36.204-.001z">
-                  </path>
-                </svg>
-              </div>
-              <div data-testid="task-content" class="task-content line-through">
-                <p>12456789</p>
-                <input data-testid="editTask" type="text" class="editTask" style="display: none;">
-              </div>
-              <div data-testid="delete-icon" class="delete-icon">
-                <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="trash-alt" class="svg-inline--fa fa-trash-alt fa-w-14" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
-                  <path d="M32 464a48 48 0 0 0 48 48h288a48 48 0 0 0 48-48V128H32zm272-256a16 16 0 0 1 32 0v224a16 16 0 0 1-32 0zm-96 0a16 16 0 0 1 32 0v224a16 16 0 0 1-32 0zm-96 0a16 16 0 0 1 32 0v224a16 16 0 0 1-32 0zM432 32H312l-9.4-18.7A24 24 0 0 0 281.1 0H166.8a23.72 23.72 0 0 0-21.4 13.3L136 32H16A16 16 0 0 0 0 48v32a16 16 0 0 0 16 16h416a16 16 0 0 0 16-16V48a16 16 0 0 0-16-16z">
-                  </path>
-                </svg>
-              </div> 
-            </div>            
+            
           </div>
           <div data-testid="plus" class="plus">
             <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="plus" class="svg-inline--fa fa-plus fa-w-14" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
@@ -159,13 +142,14 @@ describe('測試 todoList 功能', () => {
       `;
       
       const container = document.body;
-      let inputTask = getByTestId(container, 'input');
-      const plus = getByTestId(container, 'plus');
+      localStorage.setItem('saveTaskList',JSON.stringify([{
+        id: 0,
+        done: false,
+        task: 'this is a test.',
+      }])); 
       require('../js/todo');
+
       // Act
-      // 目前先以此方式測試，但一個測試內容理應不該有兩個測試行為，解決方法為主程式模組化處理(後續學習)
-      // inputTask.value = 'First task';
-      // fireEvent.click(plus);
       const deleteTask = getAllByTestId(container, 'delete-icon');
       fireEvent.click(deleteTask[0]);
 
@@ -206,15 +190,16 @@ describe('測試 todoList 功能', () => {
             </div>
           </div>
         `;
-    
+
         const container = document.body;
-        let inputTask = getByTestId(container, 'input');
-        const plus = getByTestId(container, 'plus');
+        localStorage.setItem('saveTaskList',JSON.stringify([{
+          id: 0,
+          done: false,
+          task: 'this is a test.',
+        }])); 
         require('../js/todo');
+
         // Act
-        inputTask.value = 'First task';
-        fireEvent.click(plus); 
-  
         const taskContent = getAllByTestId(container, 'task-content');
         fireEvent.dblClick(taskContent[0]);
   
@@ -257,15 +242,16 @@ describe('測試 todoList 功能', () => {
             </div>
           </div>
         `;
-    
         const container = document.body;
-        let inputTask = getByTestId(container, 'input');
-        const plus = getByTestId(container, 'plus');
+        localStorage.setItem('saveTaskList',JSON.stringify([{
+          id: 0,
+          done: false,
+          task: 'this is a test.',
+        }])); 
+        
         require('../js/todo');
+
         // Act
-        inputTask.value = 'First task';
-        fireEvent.click(plus); 
-  
         const taskContent = getAllByTestId(container, 'task-content');
         fireEvent.dblClick(taskContent[0]);
   
@@ -313,23 +299,26 @@ describe('測試 todoList 功能', () => {
       `;
   
       const container = document.body;
-      let inputTask = getByTestId(container, 'input');
-      const plus = getByTestId(container, 'plus');
       const refresh = getByTestId(container, 'refresh');
       window.alert = jest.fn()
       window.confirm = jest.fn(() => true)
-
+      localStorage.setItem('saveTaskList',JSON.stringify([
+        {
+          id: 0,
+          done: false,
+          task: 'this is a test.',
+        },
+        {
+          id: 1,
+          done: false,
+          task: 'this is a test2.',
+        }
+      ])); 
       require('../js/todo');
 
       // Act
-      inputTask.value = 'First task';
-      fireEvent.click(plus); 
-      inputTask.value = 'Second task';
-      fireEvent.click(plus); 
       fireEvent.click(refresh);
-
       const checkTaskAllDelete = getByTestId(container, 'task-list').innerHTML;
-      // localStorage.setItem('saveTaskList', '[]');
 
       // Assert
       expect(checkTaskAllDelete).toBe("");
@@ -369,19 +358,16 @@ describe('測試 todoList 功能', () => {
         `;
     
         const container = document.body;
-        let inputTask = getByTestId(container, 'input');
-        const plus = getByTestId(container, 'plus');
-  
+        localStorage.setItem('saveTaskList',JSON.stringify([{
+          id: 0,
+          done: false,
+          task: 'this is a test.',
+        }]));  
         require('../js/todo');
   
         // Act
-        inputTask.value = 'First task';
-        fireEvent.click(plus); 
-  
         const undone = getAllByTestId(container, 'undone');
         fireEvent.click(undone[0]);
-        // const checkTaskAllDelete = getByTestId(container, 'task-list').innerHTML;
-        // localStorage.setItem('saveTaskList', '[]');
         
         // Assert
         expect(undone[0]).toHaveStyle("display: none");
@@ -418,20 +404,18 @@ describe('測試 todoList 功能', () => {
         `;
     
         const container = document.body;
-        let inputTask = getByTestId(container, 'input');
-        const plus = getByTestId(container, 'plus');
-  
+        localStorage.setItem('saveTaskList',JSON.stringify([{
+          id: 0,
+          done: false,
+          task: 'this is a test.',
+        }]));  
         require('../js/todo');
   
         // Act
-        inputTask.value = 'First task';
-        fireEvent.click(plus); 
         const undone = getAllByTestId(container, 'undone');
         fireEvent.click(undone[0]);
         const done = getAllByTestId(container, 'done');
         fireEvent.click(done[0]);
-        // const checkTaskAllDelete = getByTestId(container, 'task-list').innerHTML;
-        // localStorage.setItem('saveTaskList', '[]');
         
         // Assert
         expect(done[0]).toHaveStyle("display: none");
@@ -470,11 +454,8 @@ describe('測試 todoList 功能', () => {
             </div>
           </div>
         `;
-    
         const container = document.body;
-        // 測試邏輯: 將三個區域選取起來，觸發情中
         let taskStatus = getByTestId(container, 'task-status');
-  
         require('../js/todo');
   
         // Act
@@ -514,13 +495,10 @@ describe('測試 todoList 功能', () => {
             </div>
           </div>
         `;
-    
         const container = document.body;
-        // 測試邏輯: 將三個區域選取起來，觸發情中
         let taskStatus = getAllByTestId(container, 'task-status');
-  
         require('../js/todo');
-  
+
         // Act
         fireEvent.click(taskStatus[0]);
         fireEvent.click(taskStatus[1]);
@@ -559,11 +537,8 @@ describe('測試 todoList 功能', () => {
             </div>
           </div>
         `;
-    
         const container = document.body;
-        // 測試邏輯: 將三個區域選取起來，觸發情中
         let taskStatus = getByTestId(container, 'task-status');
-  
         require('../js/todo');
   
         // Act
