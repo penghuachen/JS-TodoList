@@ -51,8 +51,6 @@ describe('測試 todoList 功能', () => {
         inputTask.value = 'First task';
         fireEvent.click(plus);
 
-        // console.log('node',global.localStorage);
-        // console.log('web',localStorage);
         const firstTaskContent = getByTestId(container, 'task-list').children[0].textContent;
       
         // Jest matcher for string
