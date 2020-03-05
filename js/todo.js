@@ -8,16 +8,8 @@ let finishedAry = [];
 let taskObj = {};
 let currentStatus = '全部';
 
-// setTimeout(() => {
-//   console.log(123);
-//   taskList(taskListAry);
-// }, 0)
 
-// DOMContentLoaded 也可以
-
-// window.onload = () => {
-  taskList(taskListAry);
-// }
+taskList(taskListAry);
 addListenerToTask();
 
 
