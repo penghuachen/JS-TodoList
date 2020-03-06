@@ -10,13 +10,11 @@ let currentStatus = '全部';
 
 
 taskList(taskListAry);
-addListenerToTask();
 
 
 document.querySelector('.plus').addEventListener('click', clickToAddTask);
 function clickToAddTask(e) {
   addTask();
-  addListenerToTask();
 }
 
 document.querySelector('.input-task input').addEventListener('keypress', keyupToAddTask);
@@ -24,7 +22,6 @@ document.querySelector('.input-task input').addEventListener('keypress', keyupTo
 function keyupToAddTask(e) {
   if(e.keyCode === 13) {
     addTask();
-    addListenerToTask();
   }
 }
 
@@ -250,7 +247,6 @@ function filterTasks(currentStatus) {
     finishedAry = taskListAry.filter(task => task.done === true);
     taskList(finishedAry);
   }
-  addListenerToTask();
 }
 
 
@@ -291,7 +287,7 @@ function taskList(tasksAry) {
     // !index && console.log(dom);
     return dom;
   }).join('');
-
+  addListenerToTask();
 }
 
 
