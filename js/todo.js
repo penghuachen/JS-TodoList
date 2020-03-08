@@ -6,7 +6,7 @@
   2. 重新命名，讓語意更明確
 */
 
-const todoTasksList =  JSON.parse(localStorage.getItem('storetodoTasksList')) || [];
+const todoTasksList =  JSON.parse(localStorage.getItem('storeTodoTasksList')) || [];
 let currentStatus = '全部';
 const DELETEICON = `
   <div data-testid="delete-icon" class="delete-icon">
@@ -99,7 +99,7 @@ function addTask(e) {
   };
   todoTasksList.push(taskObj);
   document.querySelector('.input-task input').value = '';
-  localStorage.setItem('storetodoTasksList', JSON.stringify(todoTasksList));
+  localStorage.setItem('storeTodoTasksList', JSON.stringify(todoTasksList));
   renderTaskList();
 }
 
@@ -109,7 +109,7 @@ function deleteTask(e) {
   let targetObj  = todoTasksList.find(task => task.id == targetId);
   let taskIndex = todoTasksList.indexOf(targetObj);
   todoTasksList.splice(taskIndex, 1);
-  localStorage.setItem('storetodoTasksList', JSON.stringify(todoTasksList));
+  localStorage.setItem('storeTodoTasksList', JSON.stringify(todoTasksList));
   renderTaskList()
 }
 
@@ -123,7 +123,7 @@ function deleteAllTasks(e) {
   if(deleteChecked) {
     alert('成功刪除所有待辦事項');
     todoTasksList.splice(0);
-    localStorage.setItem('storetodoTasksList',JSON.stringify(todoTasksList));
+    localStorage.setItem('storeTodoTasksList',JSON.stringify(todoTasksList));
     renderTaskList();
   }
   else {
@@ -135,7 +135,7 @@ function completeTask(e) {
   let targetId = e.currentTarget.parentNode.getAttribute('id');
   let targetObj  = todoTasksList.find(task => task.id == targetId);
   targetObj.done = true;
-  localStorage.setItem('storetodoTasksList',JSON.stringify(todoTasksList));
+  localStorage.setItem('storeTodoTasksList',JSON.stringify(todoTasksList));
   renderTaskList();
 }
 
@@ -143,7 +143,7 @@ function cancelCompletedTask(e) {
   let targetId = e.currentTarget.parentNode.getAttribute('id');
   let targetObj  = todoTasksList.find(task => task.id == targetId);
   targetObj.done = false;
-  localStorage.setItem('storetodoTasksList',JSON.stringify(todoTasksList));
+  localStorage.setItem('storeTodoTasksList',JSON.stringify(todoTasksList));
   renderTaskList();
 }
 
@@ -233,7 +233,7 @@ function taskElementsGenerator(obj) {
 }
 
 // 任務列表畫面
-function renderTaskList(tasksAry) {
+function renderTaskList() {
   const taskListView = document.querySelector('.task-list');
   const getFilterTasks = filterTasks(currentStatus);
   taskListView.innerHTML = getFilterTasks
