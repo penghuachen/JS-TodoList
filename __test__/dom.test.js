@@ -8,13 +8,13 @@ describe('測試 todoList 功能', () => {
   })
 
   afterEach(() => {
-    localStorage.setItem('saveTaskList', '[]');
+    localStorage.setItem('storeTodoTasksList', '[]');
   })
 
   describe('測試能否正常新增待辦事項', () => {
     describe('測試透過 plus 圖示新增任務', () => {
       test('測試函式: addTask', () => {
-        // Arrange 
+        // Arrange
         document.body.innerHTML = `
           <div class="header">
             <svg class="refresh" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="sync-alt" class="svg-inline--fa fa-sync-alt fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
@@ -124,9 +124,7 @@ describe('測試 todoList 功能', () => {
             <p class="doing-task">進行中</p>
             <p class="finished-task">已完成</p>
           </div>
-          <div data-testid="task-list" class="task-list">
-            
-          </div>
+          <div data-testid="task-list" class="task-list"></div>
           <div data-testid="plus" class="plus">
             <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="plus" class="svg-inline--fa fa-plus fa-w-14" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
               <path fill="currentColor" d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z">
@@ -140,9 +138,10 @@ describe('測試 todoList 功能', () => {
       `;
       
       const container = document.body;
-      localStorage.setItem('saveTaskList',JSON.stringify([{
-        id: 0,
+      localStorage.setItem('storeTodoTasksList',JSON.stringify([{
+        id: new Date().getTime(),
         done: false,
+        edit: false,
         task: 'this is a test.',
       }])); 
       require('../js/todo');
@@ -150,7 +149,6 @@ describe('測試 todoList 功能', () => {
       // Act
       const deleteTask = getAllByTestId(container, 'delete-icon');
       fireEvent.click(deleteTask[0]);
-
       const checkTaskDelete = getByTestId(container, 'task-list').innerHTML;
   
       // Assert
@@ -190,7 +188,7 @@ describe('測試 todoList 功能', () => {
         `;
 
         const container = document.body;
-        localStorage.setItem('saveTaskList',JSON.stringify([{
+        localStorage.setItem('storeTodoTasksList',JSON.stringify([{
           id: 0,
           done: false,
           task: 'this is a test.',
@@ -241,7 +239,7 @@ describe('測試 todoList 功能', () => {
           </div>
         `;
         const container = document.body;
-        localStorage.setItem('saveTaskList',JSON.stringify([{
+        localStorage.setItem('storeTodoTasksList',JSON.stringify([{
           id: 0,
           done: false,
           task: 'this is a test.',
@@ -300,7 +298,7 @@ describe('測試 todoList 功能', () => {
       const refresh = getByTestId(container, 'refresh');
       window.alert = jest.fn()
       window.confirm = jest.fn(() => true)
-      localStorage.setItem('saveTaskList',JSON.stringify([
+      localStorage.setItem('storeTodoTasksList',JSON.stringify([
         {
           id: 0,
           done: false,
@@ -356,7 +354,7 @@ describe('測試 todoList 功能', () => {
         `;
     
         const container = document.body;
-        localStorage.setItem('saveTaskList',JSON.stringify([{
+        localStorage.setItem('storeTodoTasksList',JSON.stringify([{
           id: 0,
           done: false,
           task: 'this is a test.',
@@ -368,7 +366,9 @@ describe('測試 todoList 功能', () => {
         fireEvent.click(undone[0]);
         
         // Assert
-        expect(undone[0]).toHaveStyle("display: none");
+        expect(
+          getByTestId(document.documentElement, 'done')
+        ).toBeInTheDocument();
       });
     })
     describe('測試完成勾選為未完成', () => {
@@ -402,21 +402,22 @@ describe('測試 todoList 功能', () => {
         `;
     
         const container = document.body;
-        localStorage.setItem('saveTaskList',JSON.stringify([{
+        localStorage.setItem('storeTodoTasksList',JSON.stringify([{
           id: 0,
-          done: false,
+          done: true,
           task: 'this is a test.',
         }]));  
         require('../js/todo');
   
         // Act
-        const undone = getAllByTestId(container, 'undone');
-        fireEvent.click(undone[0]);
+
         const done = getAllByTestId(container, 'done');
         fireEvent.click(done[0]);
         
         // Assert
-        expect(done[0]).toHaveStyle("display: none");
+        expect(
+          getByTestId(document.documentElement, 'undone')
+        ).toBeInTheDocument();;
 
       });
     })
